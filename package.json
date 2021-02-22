@@ -1,0 +1,24 @@
+{
+  "name": "reactjsboilerplate",
+  "version": "1.0.0",
+  "description": "ReactJS w/ ParcelJS boilerplate uwu",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel ./public/index.html",
+    "build": "parcel build ./public/index.html --public-url ./ --no-cache --no-source-maps",
+    "test": "parcel ./test/index.html --no-cache"
+  },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ],
+  "keywords": ["reactjs", "parceljs", "boilerplate", "react", "parcel"],
+  "author": "Emir",
+  "license": "ISC",
+  "devDependencies": {
+    "history": "^5.0.0",
+    "parcel-bundler": "^1.12.4",
+    "path-to-regexp": "^6.2.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
