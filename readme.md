@@ -1,4 +1,4 @@
-Welcome to ReactJSXParcelJS uwu
+Welcome to ReactJSXWebpack uwu
 
 ## Available Scripts
 
