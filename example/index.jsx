@@ -33,8 +33,8 @@ export const WebRoutes = [
 
 
 
-const AppRoutes = () => <RouterProvider routeList={WebRoutes}>
-    {WebRoutes.filter((route) => route.path).map((route, k) => <Route key={k} path={route.path}>{route.component}</Route>)}
+const AppRoutes = () => <RouterProvider>
+    {WebRoutes.map((route, k) => <Route key={k} path={route.path}>{route.component}</Route>)}
 </RouterProvider>
 
 
