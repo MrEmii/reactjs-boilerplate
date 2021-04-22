@@ -12,7 +12,7 @@ Open [http://localhost:1234](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm example`
+### `npm run example`
 
 Same as dev, but you will run a test version made by me, to see the power of the boilerplate and to have a reference of the routing and more.
 
