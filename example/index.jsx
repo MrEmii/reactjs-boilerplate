@@ -5,6 +5,7 @@ import { AppAbout } from './pages/about'
 import { AppError } from './pages/error'
 import { RouterProvider } from '../src/router/router';
 import { Route } from '../src/router/route';
+import './styles/index.scss'
 
 /**Routes format
  *
