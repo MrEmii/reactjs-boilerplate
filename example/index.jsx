@@ -21,7 +21,7 @@ export const WebRoutes = [
         component: <AppHome></AppHome>
     },
     {
-        path: "/about",
+        path: "/about/:name",
         component: <AppAbout></AppAbout>
     },
     {

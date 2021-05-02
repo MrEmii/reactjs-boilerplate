@@ -1,12 +1,12 @@
 import React from 'react';
-import { RouterContext } from './router';
 
+/**
+ *
+ * @param {object} body - body
+ * @param {string} body.path - path for the routing
+ * @param {array} body.children - children of the route
+ * @returns {React.Component} Component
+ */
 export function Route({ path, children }) {
-    const { route } = React.useContext(RouterContext);
-
-    if (route.path !== path) {
-        return null;
-    }
-
     return children;
 }

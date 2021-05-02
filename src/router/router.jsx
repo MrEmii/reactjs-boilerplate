@@ -1,58 +1,67 @@
-import React, { useContext, useLayoutEffect, useState } from 'react';
-import { pathToRegexp } from 'path-to-regexp';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { createBrowserHistory } from 'history';
-import { locationToRoute } from './utils';
+import { locationToRoute, locationToParams } from './utils';
 import { Route } from './route';
 
 
 const history = createBrowserHistory();
 
-export const RouterContext = React.createContext({
-    route: locationToRoute(history),
-});
+export const RouterContext = React.createContext(locationToRoute(history.location));
 
+export const RouterParamsContext = React.createContext([]);
+
+/**
+ *
+ * @param {object} body - body
+ * @param {array} body.children - child components for routing of type Route
+ * @returns {React.Component} This page is rendered and the routing and parameter service provider is used
+ */
 const RouterProvider = ({ children }) => {
     const routes = children.filter((child) => child.type == Route);
 
+    let params = {};
+
     const [route, setRoute] = useState(locationToRoute(history.location));
 
-    const handleRouteChange = ({ location }) => {
-        const route = locationToRoute(location);
+    const handleRouteChange = ({ location }) => setRoute(locationToRoute(location));
 
-        setRoute(route);
-    };
+    useEffect(() => {
 
-    const components = routes.map((_route, key) => {
+        let unlisten = history.listen(handleRouteChange);
 
-        const keys = [];
-        let parser = new pathToRegexp(_route.props.path ?? "", keys);
-        let similar = parser.exec(route.path);
+        return () => unlisten();
 
-        if(_route.props.path != route.path && !similar) return _route;
+    }, [history]);
 
-        const params = keys.reduce((_, curr, index, __) => {
-            curr[curr.name] = similar[index + 1];
-            return curr;
-        }, {});
 
-        return similar ? React.cloneElement(_route.props.children, { path: similar[0], params: params, key: _route.key}) : _route
 
+    const currentPage = routes.find(_route => {
+
+        params = locationToParams(route.path, _route.props.path) ?? {};
+
+        if (_route.props.path == route.path || Object.values(params).length != 0) {
+            return _route;
+        }
     });
 
-    useLayoutEffect(() => {
-        let unlisten = history.listen(handleRouteChange);
-        return () => {
-            unlisten();
-        };
-    }, []);
-
     return (
-        <RouterContext.Provider value={{ route }}>
-            {components.length == 0 ? routes.find((route) => !route.props.path).props.children ?? <p>Not path found</p> : components}
+        <RouterContext.Provider value={Object.values(route)}>
+            <RouterParamsContext.Provider value={Object.values(params)}>
+                {currentPage ?? (routes.find((_route) => !_route.props.path) ?? <p>Not path found</p>)}
+            </RouterParamsContext.Provider>
         </RouterContext.Provider>
     );
 };
 
+
+/**
+ * @returns {Array.<*>} Returns a list of pathname, hash, state and search
+ */
 const useRouter = () => useContext(RouterContext);
 
-export { useRouter, RouterProvider, history };
+/**
+ * @returns {Array.<*>} Returns a list of parameters
+ */
+const useParams = () => useContext(RouterParamsContext);
+
+export { useRouter, useParams, RouterProvider, history };
